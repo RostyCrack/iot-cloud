@@ -1,6 +1,6 @@
-# 🌡️ Sistema IoT de Monitoreo de Temperatura — Arduino + ESP32 + ThingSpeak
+# Sistema IoT de Monitoreo de Temperatura — Arduino + ESP32 + ThingSpeak
 
-## 📘 Descripción General
+## Descripción General
 
 Este sistema monitorea la temperatura ambiente mediante un sensor **LM35** conectado a un **Arduino** (esclavo I2C).  
 El valor medido se transmite vía **I2C** a un **ESP32** (maestro), que:
@@ -10,7 +10,7 @@ El valor medido se transmite vía **I2C** a un **ESP32** (maestro), que:
 
 ---
 
-## 🧩 Diagrama de Actividad (Activity Diagram)
+## Diagrama de Actividad (Activity Diagram)
 
 ```mermaid
 flowchart TD
@@ -30,14 +30,14 @@ I --> C
 
 ---
 
-## ⚙️ Código del Arduino (Esclavo I2C)
+## Código del Arduino (Esclavo I2C)
 
-### 🧠 Funcionalidad
+### Funcionalidad
 1. **Lee la temperatura del sensor LM35** cada segundo.  
 2. **Convierte la lectura analógica** a grados Celsius.  
 3. **Envía la temperatura al maestro** (ESP32) cuando éste la solicita mediante I2C.
 
-### 💻 Código Documentado
+### Código Documentado
 ```cpp
 #include <Wire.h>
 
@@ -94,15 +94,15 @@ void enviarTemperatura() {
 
 ---
 
-## ⚙️ Código del ESP32 (Maestro I2C + Conexión WiFi)
+## Código del ESP32 (Maestro I2C + Conexión WiFi)
 
-### 🧠 Funcionalidad
+### Funcionalidad
 1. Se conecta a una red WiFi.
 2. Solicita periódicamente al Arduino la temperatura vía I2C.
 3. Activa un LED si la temperatura excede los 30 °C.
 4. Envía los datos a **ThingSpeak** mediante HTTP.
 
-### 💻 Código Documentado
+### Código Documentado
 ```cpp
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -237,25 +237,25 @@ void loop() {
 
 ---
 
-## 🧪 Resultados de Pruebas
+## Resultados de Pruebas
 
 | Escenario | Resultado Esperado | Resultado Obtenido | Estado |
 |------------|--------------------|--------------------|---------|
-| Conexión WiFi exitosa | Conecta en menos de 10 s | ✅ Estable (8 s promedio) | ✔️ |
-| Comunicación I2C | Lectura de temperatura cada segundo | ✅ Fluida y sincronizada | ✔️ |
-| Temperatura < 30°C | LED apagado | ✅ LED OFF | ✔️ |
-| Temperatura > 30°C | LED encendido | ✅ LED ON | ✔️ |
-| Envío a ThingSpeak | Actualización cada 15 s | ✅ HTTP 200 OK | ✔️ |
-| Desconexión WiFi | Reintenta conexión | ✅ Reconección automática | ✔️ |
+| Conexión WiFi exitosa | Conecta en menos de 10 s | Estable (8 s promedio) | OK |
+| Comunicación I2C | Lectura de temperatura cada segundo | Fluida y sincronizada | OK |
+| Temperatura < 30°C | LED apagado | LED OFF | OK |
+| Temperatura > 30°C | LED encendido | LED ON | OK |
+| Envío a ThingSpeak | Actualización cada 15 s | HTTP 200 OK | OK |
+| Desconexión WiFi | Reintenta conexión |  Reconección automática | OK |
 
-### 📊 Rendimiento y Confiabilidad
+### Rendimiento y Confiabilidad
 - Latencia de lectura I2C: **< 50 ms**  
 - Tasa de éxito de transmisión HTTP: **100 % en 20 envíos consecutivos**  
 - Estabilidad a 1 hora de operación continua: **sin fallos**
 
 ---
 
-## 📈 Conclusiones
+## Conclusiones
 - El sistema cumple con la adquisición, transmisión y publicación de datos de temperatura en tiempo real.  
 - La comunicación I2C entre Arduino y ESP32 es confiable y eficiente.  
 - La integración con ThingSpeak permite monitoreo remoto estable y visualización en la nube.
